@@ -4,6 +4,16 @@ compatibility_date = "2026-06-19"
 workers_dev = true
 compatibility_flags = ["nodejs_compat"]
 
+[vars]
+SITE_URL = "https://arcanum-wiki.ammadkiyani92.workers.dev"
+SUPABASE_PROJECT_ID = "mewwfgqfmyclinryxhqb"
+SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ld3dmZ3FmbXljbGlucnl4aHFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NTc4NzcsImV4cCI6MjA5NzQzMzg3N30.pqsZvqzDOSMfg3wF4gcd3Fp8fiGOzCnWYDvflyHFyKc"
+SUPABASE_URL = "https://mewwfgqfmyclinryxhqb.supabase.co"
+VITE_SITE_URL = "https://arcanum-wiki.ammadkiyani92.workers.dev"
+VITE_SUPABASE_PROJECT_ID = "mewwfgqfmyclinryxhqb"
+VITE_SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ld3dmZ3FmbXljbGlucnl4aHFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NTc4NzcsImV4cCI6MjA5NzQzMzg3N30.pqsZvqzDOSMfg3wF4gcd3Fp8fiGOzCnWYDvflyHFyKc"
+VITE_SUPABASE_URL = "https://mewwfgqfmyclinryxhqb.supabase.co"
+
 [assets]
 directory = "./dist/client"
 binding = "ASSETS"

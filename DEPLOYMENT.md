@@ -14,13 +14,22 @@ ArcanumWiki is intended to be committed to GitHub and deployed from that repo to
 
 Set these in your deployment environment:
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `VITE_SITE_URL`
-- `SUPABASE_URL`
-- `SUPABASE_PUBLISHABLE_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
+
+The public values below are now pinned in `wrangler.toml` so Cloudflare keeps them during deploy:
+
 - `SITE_URL`
+- `SUPABASE_PROJECT_ID`
+- `SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_URL`
+- `VITE_SITE_URL`
+- `VITE_SUPABASE_PROJECT_ID`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_SUPABASE_URL`
+
+Keep this one in Cloudflare as a secret:
+
+- `SUPABASE_SERVICE_ROLE_KEY`
 
 `VITE_SITE_URL` and `SITE_URL` should point to the final public origin, for example your `workers.dev` URL or a custom domain.
 
