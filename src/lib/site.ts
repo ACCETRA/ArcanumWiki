@@ -1,4 +1,12 @@
-const SITE_URL = (import.meta.env.VITE_SITE_URL || process.env.SITE_URL || "")
+import { runtimeEnvValue } from "@/lib/runtime-env";
+
+const SITE_URL = (
+  runtimeEnvValue("VITE_SITE_URL") ||
+  runtimeEnvValue("SITE_URL") ||
+  import.meta.env.VITE_SITE_URL ||
+  process.env.SITE_URL ||
+  ""
+)
   .trim()
   .replace(/\/$/, "");
 

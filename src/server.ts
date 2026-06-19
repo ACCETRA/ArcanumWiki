@@ -31,6 +31,30 @@ function hydrateProcessEnv(env: unknown) {
   }
 }
 
+function injectRuntimeEnvScript(response: Response): Promise<Response> {
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("text/html")) return Promise.resolve(response);
+
+  return response.text().then((html) => {
+    const runtimeEnv = (globalThis as typeof globalThis & {
+      __ARCANUM_WORKER_ENV__?: Record<string, string>;
+    }).__ARCANUM_WORKER_ENV__ ?? {};
+
+    const script = `<script>globalThis.__ARCANUM_WORKER_ENV__=${JSON.stringify(runtimeEnv)};</script>`;
+    const injected = html.includes("</head>")
+      ? html.replace("</head>", `${script}</head>`)
+      : `${script}${html}`;
+
+    const headers = new Headers(response.headers);
+    headers.set("content-type", "text/html; charset=utf-8");
+    return new Response(injected, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  });
+}
+
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
@@ -65,7 +89,8 @@ export default {
       hydrateProcessEnv(env);
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return await injectRuntimeEnvScript(normalized);
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
