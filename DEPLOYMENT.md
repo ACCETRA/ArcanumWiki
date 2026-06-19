@@ -1,6 +1,6 @@
 # Free Deployment
 
-ArcanumWiki is intended to be committed to GitHub and deployed from that repo to a free Cloudflare hosting plan.
+ArcanumWiki is intended to be committed to GitHub and deployed from that repo to a free Cloudflare Workers plan.
 
 ## What you need
 
@@ -35,8 +35,11 @@ npm run build
 
 1. Push the code to GitHub.
 2. In Cloudflare, create a new Workers project from the GitHub repository.
-3. Add the environment variables above in the Cloudflare dashboard.
-4. Deploy on the free plan.
+3. Set the deploy command to `npm run deploy:cloudflare`.
+4. Add the environment variables above in the Cloudflare dashboard.
+5. Deploy on the free plan.
+
+`wrangler.toml` tells Cloudflare where the Worker entrypoint and static assets live after the build. The deploy script builds first, then sends the compiled app to Cloudflare.
 
 ## SEO checklist
 

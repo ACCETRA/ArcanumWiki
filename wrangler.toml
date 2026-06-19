@@ -1,0 +1,9 @@
+name = "arcanumwiki"
+main = "dist/server/server.js"
+compatibility_date = "2026-06-20"
+workers_dev = true
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist/client"
+binding = "ASSETS"
