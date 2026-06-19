@@ -1,6 +1,6 @@
 name = "arcanum-wiki"
 main = "dist/server/server.js"
-compatibility_date = "2026-06-20"
+compatibility_date = "2026-06-19"
 workers_dev = true
 compatibility_flags = ["nodejs_compat"]
 
