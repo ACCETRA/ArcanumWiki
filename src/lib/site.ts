@@ -1,20 +1,17 @@
-import { runtimeEnvValue } from "@/lib/runtime-env";
+const defaultSiteUrl = "https://arcanumwiki.pages.dev";
 
-const SITE_URL = (
-  runtimeEnvValue("VITE_SITE_URL") ||
-  runtimeEnvValue("SITE_URL") ||
-  import.meta.env.VITE_SITE_URL ||
-  process.env.SITE_URL ||
-  ""
-)
-  .trim()
-  .replace(/\/$/, "");
+export const siteConfig = {
+  name: "ArcanumWiki",
+  shortName: "ArcanumWiki",
+  description:
+    "A handmade Dungeon Master toolkit and reference archive with no AI slop, no launch-time login wall, and no ad clutter.",
+  tagline: "A handmade Dungeon Master toolkit with public pages first.",
+  siteUrl: (process.env.SITE_URL || defaultSiteUrl).replace(/\/$/, ""),
+  donateUrl: process.env.PUBLIC_DONATE_URL || "https://ko-fi.com",
+  githubUrl: "https://github.com/",
+};
 
-export function siteUrl(path = "/") {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return SITE_URL ? `${SITE_URL}${normalizedPath}` : normalizedPath;
-}
-
-export function siteOrigin() {
-  return SITE_URL;
+export function absoluteUrl(path = "/") {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${siteConfig.siteUrl}${normalized}`;
 }

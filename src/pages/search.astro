@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Search"
+  description="Search the ArcanumWiki build with Pagefind static search."
+  path="/search"
+>
+  <section class="shell py-12">
+    <div class="max-w-4xl">
+      <div class="eyebrow">Static search</div>
+      <h1 class="mt-5 text-5xl text-[color:var(--color-ink)] md:text-6xl">Search the built site, not a database.</h1>
+      <p class="mt-5 text-lg leading-8 text-[color:var(--color-ink-soft)]">
+        Pagefind creates the index after the Astro build, so this search stays fast, inexpensive, and public by default.
+      </p>
+    </div>
+
+    <div class="panel mt-8 p-6">
+      <div id="search"></div>
+    </div>
+  </section>
+
+  <script is:inline type="module">
+    const mount = document.querySelector("#search");
+
+    const renderFallback = () => {
+      if (!mount) return;
+      mount.innerHTML = `
+        <div class="rounded-2xl bg-[color:var(--color-paper-strong)] px-4 py-4 text-sm text-[color:var(--color-ink-soft)]">
+          Search becomes active after the first production build runs Pagefind. In local dev, this placeholder is expected.
+        </div>
+      `;
+    };
+
+    try {
+      const mod = await import("/pagefind/pagefind-ui.js");
+      new mod.default({
+        element: "#search",
+        showSubResults: true,
+        excerptLength: 18,
+        resetStyles: false,
+      });
+    } catch {
+      renderFallback();
+    }
+  </script>
+</BaseLayout>

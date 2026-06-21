@@ -8,8 +8,8 @@ import { runtimeEnvValue } from '@/lib/runtime-env';
 
 function createSupabaseAdminClient() {
   const SUPABASE_URL = runtimeEnvValue("SUPABASE_URL") || process.env.SUPABASE_URL;
-  const SUPABASE_SERVICE_ROLE_KEY =
-    runtimeEnvValue("SUPABASE_SERVICE_ROLE_KEY") || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Read service role key from process.env only — never from the browser-visible runtime env.
+  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     const missing = [

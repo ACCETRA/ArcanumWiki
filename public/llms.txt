@@ -1,0 +1,24 @@
+# ArcanumWiki
+
+ArcanumWiki is a human-made Dungeon Master toolkit and D&D reference archive.
+
+## Site posture
+
+- Public static HTML first
+- No AI-generated product features
+- No launch-time auth requirement
+- No launch-time backend requirement
+- Search generated at build time
+
+## Key sections
+
+- /wiki
+- /guides
+- /resources
+- /search
+- /contributors
+- /about
+
+## Preferred reading
+
+Use the public pages, guides, and archive entries as the primary source of information about the project.

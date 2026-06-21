@@ -1,58 +1,30 @@
-# Free Deployment
+# Deployment
 
-ArcanumWiki is intended to be committed to GitHub and deployed from that repo to a free Cloudflare Workers plan.
+ArcanumWiki is configured for a static Cloudflare Pages launch.
 
-## What you need
+## Build settings
 
-- A GitHub account
-- A Cloudflare account
-- Your Supabase project URL
-- Your Supabase publishable key
-- A production site URL set in `VITE_SITE_URL` and `SITE_URL`
+- Build command: `npm run build`
+- Output directory: `dist`
 
-## Environment variables
+## Launch posture
 
-Set these in your deployment environment:
+- No auth required
+- No backend functions required
+- No private API keys required
+- Public pages only
 
-- `SUPABASE_SERVICE_ROLE_KEY`
+## Suggested flow
 
-The public values below are now pinned in `wrangler.toml` so Cloudflare keeps them during deploy:
+1. Push the repository to GitHub.
+2. Create a Cloudflare Pages project from that repository.
+3. Set the build command to `npm run build`.
+4. Set the output directory to `dist`.
+5. Set `SITE_URL` in the Pages project if you want canonical URLs to use a custom origin.
+
+## Optional public variables
 
 - `SITE_URL`
-- `SUPABASE_PROJECT_ID`
-- `SUPABASE_PUBLISHABLE_KEY`
-- `SUPABASE_URL`
-- `VITE_SITE_URL`
-- `VITE_SUPABASE_PROJECT_ID`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `VITE_SUPABASE_URL`
+- `PUBLIC_DONATE_URL`
 
-Keep this one in Cloudflare as a secret:
-
-- `SUPABASE_SERVICE_ROLE_KEY`
-
-`VITE_SITE_URL` and `SITE_URL` should point to the final public origin, for example your `workers.dev` URL or a custom domain.
-
-## Build
-
-```bash
-npm install
-npm run build
-```
-
-## Deploy
-
-1. Push the code to GitHub.
-2. In Cloudflare, create a new Workers project from the GitHub repository.
-3. Set the deploy command to `npm run deploy:cloudflare`.
-4. Add the environment variables above in the Cloudflare dashboard.
-5. Deploy on the free plan.
-
-`wrangler.toml` tells Cloudflare where the Worker entrypoint and static assets live after the build. The deploy script builds first, then sends the compiled app to Cloudflare.
-
-## SEO checklist
-
-- Keep `public/robots.txt` live
-- Keep `src/routes/sitemap[.]xml.ts` deployed
-- Set `VITE_SITE_URL` to the production origin
-- Re-seed content after any database reset with `npm run seed:public`
+Both are safe to expose because they are public-facing values.

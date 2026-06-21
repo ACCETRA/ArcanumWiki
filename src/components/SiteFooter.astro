@@ -1,0 +1,29 @@
+---
+import { absoluteUrl, siteConfig } from "@/lib/site";
+---
+
+<footer class="shell pb-10 pt-16">
+  <div class="ink-panel px-6 py-8 md:px-8">
+    <div class="grid gap-8 md:grid-cols-[1.1fr_0.9fr]">
+      <div>
+        <div class="eyebrow border-white/10 bg-white/5 text-[color:var(--color-gold-soft)]">Launch posture</div>
+        <h2 class="mt-4 text-3xl text-[color:var(--color-paper)]">Public pages first. Community later.</h2>
+        <p class="mt-4 max-w-2xl text-[color:rgba(244,236,220,0.78)]">
+          ArcanumWiki launches as a static reference site: no login wall, no backend dependency, no AI features, and no ad clutter in the reading flow.
+        </p>
+      </div>
+
+      <div class="grid gap-3 text-sm text-[color:rgba(244,236,220,0.78)] sm:grid-cols-2">
+        <a href="/wiki" class="rounded-2xl border border-white/10 px-4 py-3 transition hover:border-[color:var(--color-gold-soft)] hover:text-white">Browse the archive</a>
+        <a href="/guides" class="rounded-2xl border border-white/10 px-4 py-3 transition hover:border-[color:var(--color-gold-soft)] hover:text-white">Read the guides</a>
+        <a href="/resources" class="rounded-2xl border border-white/10 px-4 py-3 transition hover:border-[color:var(--color-gold-soft)] hover:text-white">Open the generators</a>
+        <a href="/search" class="rounded-2xl border border-white/10 px-4 py-3 transition hover:border-[color:var(--color-gold-soft)] hover:text-white">Use static search</a>
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-[color:rgba(244,236,220,0.66)] md:flex-row md:items-center md:justify-between">
+      <p>{siteConfig.name} is built for readable public HTML, clear authorship, and tools that run in the browser.</p>
+      <p>{absoluteUrl("/")}</p>
+    </div>
+  </div>
+</footer>

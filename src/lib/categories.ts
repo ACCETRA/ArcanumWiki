@@ -1,14 +1,3 @@
-import {
-  BookOpenText,
-  Gem,
-  MapPinned,
-  ScrollText,
-  Shield,
-  Skull,
-  Sparkles,
-  Swords,
-} from "lucide-react";
-
 export const CATEGORIES = [
   "Classes",
   "Races",
@@ -23,7 +12,6 @@ export const CATEGORIES = [
 export type Category = (typeof CATEGORIES)[number];
 
 export type CategoryMeta = {
-  icon: typeof ScrollText;
   tagline: string;
   description: string;
   seoTitle: string;
@@ -43,81 +31,69 @@ export type CategoryHub = {
 
 export const CATEGORY_META: Record<Category, CategoryMeta> = {
   Classes: {
-    icon: Swords,
-    tagline: "Fighters, wizards, rogues, and everything in between.",
-    description: "Class deep-dives, subclasses, progression notes, and combat identity.",
+    tagline: "Build notes, subclass instincts, and what each class feels like at the table.",
+    description: "Class pages that explain role, tempo, strengths, and where the fantasy lands.",
     seoTitle: "D&D Classes - ArcanumWiki",
     seoDescription:
-      "Browse D&D classes, subclass ideas, progression notes, and build guidance in a clean editorial archive.",
+      "Browse D&D classes with clean role notes, build instincts, and practical table-facing summaries.",
     starter: {
-      title: "Class name",
-      summary: "A concise overview of the class role and fantasy.",
+      title: "Class field notes",
+      summary: "A plain answer on who this class serves and what it does well.",
       content: `# Overview
 
-Describe the class fantasy, role, and table niche.
+Describe the class fantasy, table role, and where it shines.
 
-## Features
-
-| Level | Feature | Notes |
-| --- | --- | --- |
-| 1 |  |  |
-| 2 |  |  |
-| 3 |  |  |
-
-## Subclasses
+## Core strengths
 
 - 
 
-## Build Notes
+## Watch for
 
-- Strengths:
-- Weaknesses:
-- Ideal party role:
+- 
+
+## Party fit
+
+- 
 `,
     },
   },
   Races: {
-    icon: Sparkles,
-    tagline: "Species, lineages, cultures, and character roots.",
-    description: "Species and lineage references with culture, traits, and story hooks.",
+    tagline: "Lineage pages that care about culture, habits, and story hooks.",
+    description: "Races and lineages described as people with history, not just stat blocks.",
     seoTitle: "D&D Races - ArcanumWiki",
     seoDescription:
-      "Browse D&D races, lineages, and ancestry pages with culture notes, traits, and story hooks.",
+      "Browse D&D races and lineages with culture, character hooks, and clear at-table notes.",
     starter: {
-      title: "Lineage name",
-      summary: "What makes this lineage distinct in play and story.",
+      title: "Lineage notes",
+      summary: "What this lineage feels like in play and why a player might choose it.",
       content: `# Overview
 
-Summarize the lineage, ancestry, or people.
+Summarize the lineage and what it brings to the campaign.
 
-## Traits
+## Traits that matter
 
-| Trait | Detail |
-| --- | --- |
-| Speed |  |
-| Size |  |
-| Senses |  |
-| Features |  |
+- 
 
-## Culture and Society
+## Culture and customs
 
-## Adventuring Hooks
+- 
+
+## Story hooks
 
 - 
 `,
     },
   },
   Spells: {
-    icon: BookOpenText,
-    tagline: "Arcane, divine, and primal magic at a glance.",
-    description: "Spell references with scaling, school, and combat-use guidance.",
+    tagline: "Spell pages focused on use, timing, and why a slot is worth spending.",
+    description: "Spell reference pages written for quick reading during prep or at the table.",
     seoTitle: "D&D Spells - ArcanumWiki",
     seoDescription:
-      "Browse D&D spells with level, school, casting details, and practical spellbook references.",
+      "Browse D&D spells with practical casting notes, table use, and clean reference formatting.",
     starter: {
-      title: "Spell name",
-      summary: "The spell's effect, role, and best uses.",
-      content: `# Spell Block
+      title: "Spell card",
+      summary: "The clean version of what the spell does, when it matters, and what it costs.",
+      content: `# Spell block
 
 | Field | Value |
 | --- | --- |
@@ -125,61 +101,59 @@ Summarize the lineage, ancestry, or people.
 | School |  |
 | Casting Time |  |
 | Range |  |
-| Components |  |
 | Duration |  |
 
-## Effect
+## When it earns the slot
 
-## Upcasting
+- 
 
-## Best Uses
+## Watch for
 
 - 
 `,
     },
   },
   Monsters: {
-    icon: Skull,
-    tagline: "Bestiary entries, boss fights, and encounter notes.",
-    description: "Creature pages with tactics, abilities, and encounter pacing.",
+    tagline: "Threat pages that explain behavior, pressure, and encounter shape.",
+    description: "Monster pages written for people who need tactics and scene texture fast.",
     seoTitle: "D&D Monsters - ArcanumWiki",
     seoDescription:
-      "Browse D&D monsters, encounter threats, and bestiary pages with tactics, role, and quick-reference notes.",
+      "Browse D&D monsters with behavior notes, tactics, and encounter-ready summaries.",
     starter: {
-      title: "Monster name",
-      summary: "What this creature does in a scene or encounter.",
-      content: `# Stat Snapshot
+      title: "Monster play notes",
+      summary: "What the monster does in a scene and how a DM should run it.",
+      content: `# Snapshot
 
 | Field | Value |
 | --- | --- |
-| Type |  |
-| Size |  |
-| Alignment |  |
-| Armor Class |  |
-| Hit Points |  |
-| Speed |  |
+| Threat |  |
+| Terrain |  |
+| Role |  |
 
-## Traits
+## Behavior
 
-## Actions
+- 
 
 ## Tactics
 
-## Treasure
+- 
+
+## Treasure or aftermath
+
+- 
 `,
     },
   },
   Items: {
-    icon: Gem,
-    tagline: "Magic items, relics, consumables, and gear.",
-    description: "Loot entries with rarity, attunement, and story value.",
+    tagline: "Gear pages that treat utility and story value like part of the same thing.",
+    description: "Items, relics, and consumables with clean notes on use, rarity, and table impact.",
     seoTitle: "D&D Items - ArcanumWiki",
     seoDescription:
-      "Browse D&D items, relics, and gear pages with rarity, attunement, lore, and table-ready summaries.",
+      "Browse D&D items, relics, and gear with rarity notes, synergies, and practical summaries.",
     starter: {
-      title: "Item name",
-      summary: "What the item does and why adventurers chase it.",
-      content: `# Item Details
+      title: "Item notes",
+      summary: "What the item changes in play and why a party remembers it.",
+      content: `# Item details
 
 | Field | Value |
 | --- | --- |
@@ -187,81 +161,90 @@ Summarize the lineage, ancestry, or people.
 | Type |  |
 | Attunement |  |
 
-## Effect
+## Best use
 
-## Lore
+- 
 
-## Synergies
+## Story hook
+
+- 
 `,
     },
   },
   Lore: {
-    icon: ScrollText,
-    tagline: "Histories, gods, planes, and the shape of the world.",
-    description: "Setting canon, timelines, factions, and deep lore references.",
+    tagline: "Places, factions, and histories written to be used, not merely admired.",
+    description: "Lore pages that hand DMs a few strong facts and turn them into usable prep.",
     seoTitle: "D&D Lore - ArcanumWiki",
     seoDescription:
-      "Browse D&D lore pages for gods, planes, timelines, factions, and worldbuilding references.",
+      "Browse D&D lore with practical worldbuilding notes, timelines, factions, and hooks.",
     starter: {
-      title: "Lore topic",
-      summary: "The key worldbuilding idea in one line.",
+      title: "Lore notes",
+      summary: "What matters about this setting detail right now.",
       content: `# Overview
 
-Explain the lore entry and why it matters.
+Explain the idea in table-ready language.
 
-## History
+## Why it matters
 
-## Current Status
+- 
 
-## Factions or Figures
+## Current pressure points
 
-## Related Places
+- 
+
+## Hooks
+
+- 
 `,
     },
   },
   Campaigns: {
-    icon: MapPinned,
-    tagline: "Adventures, modules, locations, and campaign notes.",
-    description: "Adventure archives with sessions, places, and quest hooks.",
+    tagline: "Adventure pages built to help a group reach session one quickly.",
+    description: "Campaign notes, module primers, and location pages with actual prep value.",
     seoTitle: "D&D Campaigns - ArcanumWiki",
     seoDescription:
-      "Browse D&D campaign pages with sessions, locations, quest hooks, and adventure notes.",
+      "Browse D&D campaign notes, module primers, and location pages built for real prep.",
     starter: {
-      title: "Campaign name",
-      summary: "The premise and tone of the adventure.",
+      title: "Campaign primer",
+      summary: "The premise, tone, and what a DM should prep first.",
       content: `# Premise
 
-## Starting Hook
+## Starting hook
 
-## Key Locations
+- 
 
-## Important NPCs
+## What to prep first
 
-## Session Zero Notes
+- 
 
-## Quest Arc
+## Tone and pressure
+
+- 
 `,
     },
   },
   Homebrew: {
-    icon: Shield,
-    tagline: "Original content, playtest ideas, and house rules.",
-    description: "Player-made creations, variants, and experimental content.",
+    tagline: "Original rules and experiments with the problem statement left visible.",
+    description: "Homebrew pages that explain design goals, tradeoffs, and playtest risks honestly.",
     seoTitle: "D&D Homebrew - ArcanumWiki",
     seoDescription:
-      "Browse D&D homebrew classes, monsters, spells, items, and house rules in one archive.",
+      "Browse D&D homebrew rules, items, monsters, and experiments with visible design notes.",
     starter: {
-      title: "Homebrew idea",
-      summary: "What the homebrew is trying to solve or add.",
+      title: "Homebrew draft",
+      summary: "What the rule or creation is trying to fix, add, or sharpen.",
       content: `# Concept
 
-## Design Goals
+## Problem it solves
 
-## Mechanics
+- 
 
-## Balance Notes
+## Rule text
 
-## Playtest Feedback
+- 
+
+## Playtest notes
+
+- 
 `,
     },
   },
@@ -270,52 +253,52 @@ Explain the lore entry and why it matters.
 export const CATEGORY_HUBS: Partial<Record<Category, CategoryHub>> = {
   Classes: {
     path: "/dnd-classes",
-    label: "Browse the class hub",
-    description: "A landing page for class build ideas, subclasses, and reading order.",
+    label: "D&D class hub",
+    description: "Field guides for classes, subclasses, and build instincts.",
   },
   Spells: {
     path: "/dnd-spells",
-    label: "Browse the spell hub",
-    description: "A landing page for spell pages, schools, and casting notes.",
+    label: "D&D spell hub",
+    description: "Quick spell pages built for prep and table use.",
   },
   Monsters: {
     path: "/dnd-monsters",
-    label: "Browse the monster hub",
-    description: "A landing page for bestiary pages, threats, and encounter prep.",
+    label: "D&D monster hub",
+    description: "Threat notes, encounter pressure, and bestiary highlights.",
   },
   Items: {
     path: "/dnd-items",
-    label: "Browse the item hub",
-    description: "A landing page for loot, relics, and gear references.",
+    label: "D&D item hub",
+    description: "Loot, relics, and utility gear with readable summaries.",
   },
 };
-
-export function getCategoryHub(category: Category): CategoryHub | null {
-  return CATEGORY_HUBS[category] ?? null;
-}
 
 export const HOME_PORTALS = [
   {
     title: "Build a character",
-    description: "Jump into classes, lineages, and spells that define a hero.",
+    description: "Start with class notes, lineage pages, and spells that answer real table questions.",
     category: "Classes" as Category,
   },
   {
-    title: "Study the monsters",
-    description: "Find threats, boss fights, and encounter ideas fast.",
+    title: "Prep the threat",
+    description: "Open monster pages, pacing notes, and encounter-ready ideas for your next session.",
     category: "Monsters" as Category,
   },
   {
-    title: "Open the lore archive",
-    description: "Browse settings, gods, factions, and world history.",
+    title: "Search the setting",
+    description: "Use lore pages and campaign primers as quick-reference material, not wallpaper.",
     category: "Lore" as Category,
   },
   {
-    title: "Forge homebrew",
-    description: "Record table rules, custom classes, and original monsters.",
+    title: "Test new rules",
+    description: "Keep homebrew experiments visible, credited, and easy to revisit later.",
     category: "Homebrew" as Category,
   },
 ] as const;
+
+export function getCategoryHub(category: Category): CategoryHub | null {
+  return CATEGORY_HUBS[category] ?? null;
+}
 
 export function getStarterTemplate(category: Category) {
   return CATEGORY_META[category].starter;

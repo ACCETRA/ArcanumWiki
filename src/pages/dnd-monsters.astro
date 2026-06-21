@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import CategoryHubPage from "@/components/CategoryHubPage.astro";
+---
+
+<BaseLayout
+  title="D&D Monsters"
+  description="Monster pages with tactics, pressure, and encounter texture."
+  path="/dnd-monsters"
+>
+  <CategoryHubPage
+    category="Monsters"
+    eyebrow="Monster hub"
+    title="Threat pages for DMs who need behavior, not filler"
+    text="Bestiary entries work best when they explain what the creature does in a room. That is the standard the monster hub is built around."
+  />
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import CategoryHubPage from "@/components/CategoryHubPage.astro";
+---
+
+<BaseLayout
+  title="D&D Classes"
+  description="Field guides for classes, roles, and build instincts."
+  path="/dnd-classes"
+>
+  <CategoryHubPage
+    category="Classes"
+    eyebrow="Class hub"
+    title="Class notes written for how the table actually plays"
+    text="These pages focus on role, pacing, and what makes a class feel good in motion instead of pretending the only useful answer is a build spreadsheet."
+  />
+</BaseLayout>

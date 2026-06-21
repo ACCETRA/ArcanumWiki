@@ -1,0 +1,13 @@
+---
+const { eyebrow, title, text } = Astro.props as {
+  eyebrow: string;
+  title: string;
+  text: string;
+};
+---
+
+<div class="max-w-3xl">
+  <div class="eyebrow">{eyebrow}</div>
+  <h2 class="mt-4 text-4xl text-[color:var(--color-ink)]">{title}</h2>
+  <p class="mt-4 text-lg leading-8 text-[color:var(--color-ink-soft)]">{text}</p>
+</div>

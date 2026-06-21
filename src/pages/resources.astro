@@ -1,0 +1,37 @@
+---
+import ToolboxDeck from "@/components/ToolboxDeck";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+---
+
+<BaseLayout
+  title="Tools"
+  description="Use the browser-side ArcanumWiki generators for NPCs, loot hooks, and names."
+  path="/resources"
+>
+  <section class="shell py-12">
+    <div class="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
+      <div>
+        <div class="eyebrow">Tools without a backend</div>
+        <h1 class="mt-5 text-5xl text-[color:var(--color-ink)] md:text-6xl">Three launch generators, all running client-side.</h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-[color:var(--color-ink-soft)]">
+          This is the phase-one toolset from the build brief: NPC, loot, and name generators built from curated tables in the repo. They stay cheap to run and easy to trust because the browser does the work.
+        </p>
+      </div>
+
+      <div class="panel p-6">
+        <div class="kicker">Why this matters</div>
+        <ul class="mt-4 space-y-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">
+          <li>No login required to use the tools.</li>
+          <li>No API keys exposed to ship the launch.</li>
+          <li>No runtime dependency that can blank the page.</li>
+          <li>Curated tables are editable in source control.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <ToolboxDeck client:load />
+    </div>
+  </section>
+</BaseLayout>

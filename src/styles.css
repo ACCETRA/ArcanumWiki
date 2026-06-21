@@ -1,272 +1,162 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
+@import "tailwindcss";
 
 @import "@fontsource/cinzel/400.css";
 @import "@fontsource/cinzel/600.css";
 @import "@fontsource/cinzel/700.css";
-@import "@fontsource/cinzel/900.css";
 @import "@fontsource/libre-baskerville/400.css";
 @import "@fontsource/libre-baskerville/700.css";
-@import "@fontsource/inter/300.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
 @import "@fontsource/source-sans-3/400.css";
-@import "@fontsource/source-sans-3/500.css";
 @import "@fontsource/source-sans-3/600.css";
+@import "@fontsource/source-sans-3/700.css";
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/600.css";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-arcane: var(--arcane);
-  --color-parchment: var(--parchment);
-  --color-blood: var(--blood);
-  --font-title: "Cinzel", "Libre Baskerville", Georgia, serif;
+@theme {
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
   --font-display: "Libre Baskerville", Georgia, serif;
-  --font-sans: "Source Sans 3", "Inter", system-ui, sans-serif;
-  --font-ui: "Inter", "Source Sans 3", system-ui, sans-serif;
+  --font-title: "Cinzel", "Libre Baskerville", Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-}
-
-/* Default = dark "arcane midnight" theme. Light "parchment" available via .light. */
-:root {
-  --radius: 0.5rem;
-  --background: oklch(0.12 0.03 255);
-  --foreground: oklch(0.96 0.01 85);
-  --card: oklch(0.17 0.03 255);
-  --card-foreground: oklch(0.96 0.01 85);
-  --popover: oklch(0.15 0.03 255);
-  --popover-foreground: oklch(0.96 0.01 85);
-  --primary: oklch(0.8 0.1 84);
-  --primary-foreground: oklch(0.16 0.03 255);
-  --secondary: oklch(0.22 0.03 255);
-  --secondary-foreground: oklch(0.96 0.01 85);
-  --muted: oklch(0.2 0.02 255);
-  --muted-foreground: oklch(0.72 0.01 255);
-  --accent: oklch(0.58 0.12 286);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.58 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.03 255 / 60%);
-  --input: oklch(0.19 0.03 255);
-  --ring: oklch(0.8 0.1 84);
-  --gold: oklch(0.8 0.1 84);
-  --gold-soft: oklch(0.88 0.06 86);
-  --arcane: oklch(0.58 0.12 286);
-  --parchment: oklch(0.93 0.03 86);
-  --blood: oklch(0.45 0.18 25);
-}
-
-.light {
-  --background: oklch(0.96 0.02 85);
-  --foreground: oklch(0.2 0.04 270);
-  --card: oklch(0.98 0.015 85);
-  --card-foreground: oklch(0.2 0.04 270);
-  --popover: oklch(0.98 0.015 85);
-  --popover-foreground: oklch(0.2 0.04 270);
-  --primary: oklch(0.45 0.15 295);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.9 0.03 85);
-  --secondary-foreground: oklch(0.2 0.04 270);
-  --muted: oklch(0.92 0.02 85);
-  --muted-foreground: oklch(0.45 0.04 270);
-  --accent: oklch(0.65 0.13 80);
-  --accent-foreground: oklch(0.2 0.04 270);
-  --border: oklch(0.8 0.03 85);
-  --input: oklch(0.92 0.02 85);
-  --ring: oklch(0.45 0.15 295);
+  --color-paper: #f4ecdc;
+  --color-paper-strong: #efe3ce;
+  --color-ink: #18231f;
+  --color-ink-soft: #37433f;
+  --color-moss: #355448;
+  --color-gold: #b8892e;
+  --color-gold-soft: #d0ab63;
+  --color-clay: #8e5438;
+  --color-line: rgba(24, 35, 31, 0.14);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
+  :root {
+    color-scheme: light;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
-    background: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-sans);
-    background-image:
-      radial-gradient(circle at top left, oklch(0.55 0.1 286 / 0.16), transparent 34%),
-      radial-gradient(circle at bottom right, oklch(0.8 0.1 84 / 0.08), transparent 30%),
-      linear-gradient(180deg, transparent 0%, oklch(1 0 0 / 0.02) 45%, transparent 100%),
-      repeating-linear-gradient(135deg, oklch(1 0 0 / 0.015) 0 1px, transparent 1px 24px);
-    background-attachment: fixed;
     min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(184, 137, 46, 0.18), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(53, 84, 72, 0.18), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0)),
+      var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
   }
+
   h1,
   h2,
   h3,
-  .font-display {
+  h4 {
     font-family: var(--font-display);
     letter-spacing: 0.01em;
   }
-  .font-title {
-    font-family: var(--font-title);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+
+  a {
+    color: inherit;
   }
-  .font-ui {
-    font-family: var(--font-ui);
-  }
+
   ::selection {
     background: var(--color-gold);
-    color: var(--color-primary-foreground);
+    color: #fffdf8;
   }
 }
 
-@utility rune-border {
-  position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      var(--color-gold) 0%,
-      transparent 45%,
-      var(--color-arcane) 100%
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
-}
 
-@utility paper-surface {
-  background:
-    linear-gradient(180deg, oklch(0.98 0.01 85 / 0.02), transparent 48%),
-    linear-gradient(135deg, oklch(1 0 0 / 0.03), transparent 35%), var(--color-card);
-  box-shadow:
-    0 24px 80px oklch(0 0 0 / 0.28),
-    inset 0 1px 0 oklch(1 0 0 / 0.04);
-}
+  .panel {
+    @apply rounded-[1.75rem] border border-[color:var(--color-line)] bg-white/72 shadow-[0_18px_80px_rgba(24,35,31,0.08)] backdrop-blur;
+  }
 
-@utility ink-panel {
-  background:
-    radial-gradient(circle at top, oklch(1 0 0 / 0.05), transparent 42%), var(--color-card);
-  border: 1px solid var(--color-border);
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.05);
-}
+  .ink-panel {
+    @apply rounded-[1.75rem] border border-white/10 bg-[color:var(--color-ink)] text-[color:var(--color-paper)] shadow-[0_24px_90px_rgba(24,35,31,0.26)];
+  }
 
-@utility prose-wiki {
-  & h1 {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
-    color: var(--color-gold);
+  .eyebrow {
+    @apply inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-[color:var(--color-moss)];
   }
-  & h2 {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 0.25rem;
+
+  .cta-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-[color:var(--color-gold)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[color:var(--color-gold-soft)];
   }
-  & h3 {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-gold-soft);
+
+  .cta-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-[color:var(--color-line)] bg-white/68 px-5 py-3 text-sm font-semibold text-[color:var(--color-ink)] transition hover:border-[color:var(--color-gold)] hover:text-[color:var(--color-gold)];
   }
-  & p {
-    margin: 0.75rem 0;
-    line-height: 1.75;
+
+  .kicker {
+    @apply text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-[color:var(--color-moss)];
   }
-  & ul,
-  & ol {
-    padding-left: 1.5rem;
-    margin: 0.75rem 0;
+
+  .prose-wiki {
+    @apply text-[1.05rem] leading-8 text-[color:var(--color-ink-soft)];
   }
-  & li {
-    margin: 0.25rem 0;
+
+  .prose-wiki h1 {
+    @apply mt-2 text-4xl text-[color:var(--color-ink)];
   }
-  & a {
-    color: var(--color-gold);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+
+  .prose-wiki h2 {
+    @apply mt-10 border-b border-[color:var(--color-line)] pb-2 text-2xl text-[color:var(--color-ink)];
   }
-  & a:hover {
-    color: var(--color-gold-soft);
+
+  .prose-wiki h3 {
+    @apply mt-8 text-xl text-[color:var(--color-moss)];
   }
-  & code {
-    font-family: var(--font-mono);
-    background: var(--color-muted);
-    padding: 0.1rem 0.35rem;
-    border-radius: 4px;
-    font-size: 0.9em;
+
+  .prose-wiki p,
+  .prose-wiki ul,
+  .prose-wiki ol,
+  .prose-wiki table,
+  .prose-wiki blockquote {
+    @apply my-5;
   }
-  & pre {
-    font-family: var(--font-mono);
-    background: var(--color-muted);
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 1rem 0;
+
+  .prose-wiki ul,
+  .prose-wiki ol {
+    @apply pl-6;
   }
-  & blockquote {
-    border-left: 3px solid var(--color-gold);
-    padding-left: 1rem;
-    margin: 1rem 0;
-    color: var(--color-muted-foreground);
-    font-style: italic;
+
+  .prose-wiki li {
+    @apply my-2;
   }
-  & table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
+
+  .prose-wiki table {
+    @apply w-full border-collapse overflow-hidden rounded-2xl text-sm;
   }
-  & th,
-  & td {
-    border: 1px solid var(--color-border);
-    padding: 0.5rem 0.75rem;
+
+  .prose-wiki th,
+  .prose-wiki td {
+    @apply border border-[color:var(--color-line)] px-4 py-3 text-left;
   }
-  & th {
-    background: var(--color-muted);
-    font-family: var(--font-display);
+
+  .prose-wiki th {
+    @apply bg-[color:var(--color-paper-strong)] font-semibold text-[color:var(--color-ink)];
   }
-  & hr {
-    border: 0;
-    border-top: 1px dashed var(--color-border);
-    margin: 1.5rem 0;
+
+  .prose-wiki code {
+    @apply rounded bg-[color:var(--color-paper-strong)] px-1.5 py-0.5 text-[0.92em] text-[color:var(--color-clay)];
+  }
+
+  .prose-wiki blockquote {
+    @apply border-l-4 border-[color:var(--color-gold)] pl-4 italic text-[color:var(--color-moss)];
+  }
+
+  .pagefind-ui {
+    --pagefind-ui-scale: 0.95;
+    --pagefind-ui-primary: var(--color-gold);
+    --pagefind-ui-text: var(--color-ink);
+    --pagefind-ui-background: rgba(255, 255, 255, 0.72);
+    --pagefind-ui-border: rgba(24, 35, 31, 0.14);
+    --pagefind-ui-tag: var(--color-paper-strong);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 1rem;
+    --pagefind-ui-font: var(--font-sans);
   }
 }

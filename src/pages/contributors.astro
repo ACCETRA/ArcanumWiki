@@ -1,0 +1,51 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getArchiveByAuthor } from "@/lib/archive";
+import { getSeedContributors } from "@/lib/seed-content";
+
+const contributors = getSeedContributors();
+---
+
+<BaseLayout
+  title="Contributors"
+  description="Meet the credited contributors behind the seeded ArcanumWiki archive."
+  path="/contributors"
+>
+  <section class="shell py-12">
+    <div class="max-w-4xl">
+      <div class="eyebrow">Visible authorship</div>
+      <h1 class="mt-5 text-5xl text-[color:var(--color-ink)] md:text-6xl">Credited people, not faceless content churn.</h1>
+      <p class="mt-5 text-lg leading-8 text-[color:var(--color-ink-soft)]">
+        The launch keeps authors visible even before community profiles arrive. Each seeded page points back here so readers can see who shaped the archive.
+      </p>
+    </div>
+
+    <div class="mt-8 space-y-6">
+      {contributors.map((contributor) => {
+        const pages = getArchiveByAuthor(contributor.username).slice(0, 4);
+        return (
+          <article class="panel p-6" id={contributor.username}>
+            <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+              <div>
+                <div class="kicker">{contributor.edit_count} seeded edits</div>
+                <h2 class="mt-3 text-3xl text-[color:var(--color-ink)]">{contributor.display_name}</h2>
+                <p class="mt-3 text-base leading-8 text-[color:var(--color-ink-soft)]">{contributor.bio}</p>
+              </div>
+
+              <div>
+                <div class="kicker">Pages in the archive</div>
+                <div class="mt-4 grid gap-3 md:grid-cols-2">
+                  {pages.map((page) => (
+                    <a href={`/wiki/${page.slug}`} class="rounded-2xl bg-[color:var(--color-paper-strong)] px-4 py-4 text-sm font-semibold text-[color:var(--color-clay)] transition hover:bg-[color:var(--color-gold)] hover:text-white">
+                      {page.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+</BaseLayout>

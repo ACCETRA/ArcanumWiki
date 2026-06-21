@@ -1,0 +1,102 @@
+---
+import ArchiveCard from "@/components/ArchiveCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getSeedPageBySlug, getSeedPages } from "@/lib/seed-content";
+import { estimateReadTime } from "@/lib/wiki-content";
+import { renderMarkdown } from "@/lib/markdown";
+import { absoluteUrl } from "@/lib/site";
+
+export function getStaticPaths() {
+  return getSeedPages().map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const html = renderMarkdown(page.content);
+const readTime = estimateReadTime(page.content);
+const related = page.related
+  .map((slug: string) => getSeedPageBySlug(slug))
+  .filter(Boolean)
+  .slice(0, 3);
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: page.title,
+  description: page.summary,
+  datePublished: page.created_at,
+  dateModified: page.updated_at,
+  author: {
+    "@type": "Person",
+    name: page.profiles.display_name,
+  },
+  url: absoluteUrl(`/wiki/${page.slug}`),
+});
+---
+
+<BaseLayout title={page.title} description={page.summary} path={`/wiki/${page.slug}`}>
+  <script is:inline slot="head" type="application/ld+json" set:html={schema}></script>
+
+  <article class="shell py-12">
+    <header class="panel px-6 py-7 md:px-8">
+      <div class="flex flex-wrap items-start justify-between gap-6">
+        <div class="max-w-4xl">
+          <div class="eyebrow">{page.category}</div>
+          <h1 class="mt-4 text-4xl text-[color:var(--color-ink)] md:text-5xl">{page.title}</h1>
+          <p class="mt-4 text-lg leading-8 text-[color:var(--color-ink-soft)]">{page.summary}</p>
+          <div class="mt-5 flex flex-wrap gap-3 text-sm text-[color:var(--color-moss)]">
+            <span class="rounded-full bg-[color:var(--color-paper-strong)] px-3 py-1">{readTime} min read</span>
+            <span class="rounded-full bg-[color:var(--color-paper-strong)] px-3 py-1">{page.view_count} views</span>
+            <span class="rounded-full bg-[color:var(--color-paper-strong)] px-3 py-1">Updated {new Date(page.updated_at).toLocaleDateString()}</span>
+          </div>
+        </div>
+
+        <aside class="w-full max-w-sm rounded-[1.5rem] bg-[color:var(--color-paper-strong)] p-5">
+          <div class="kicker">Credited author</div>
+          <h2 class="mt-3 text-2xl text-[color:var(--color-ink)]">{page.profiles.display_name}</h2>
+          <p class="mt-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">{page.profiles.bio}</p>
+          <a href={`/contributors#${page.profiles.username}`} class="mt-4 inline-flex text-sm font-semibold text-[color:var(--color-gold)]">
+            View contributor record
+          </a>
+        </aside>
+      </div>
+    </header>
+
+    <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
+      <div class="panel px-6 py-7 md:px-8">
+        <div class="prose-wiki" set:html={html}></div>
+      </div>
+
+      <aside class="space-y-5">
+        <div class="panel p-5">
+          <div class="kicker">Page notes</div>
+          <div class="mt-4 space-y-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">
+            <p>Category: <strong class="text-[color:var(--color-ink)]">{page.category}</strong></p>
+            <p>Author: <strong class="text-[color:var(--color-ink)]">{page.profiles.display_name}</strong></p>
+            <p>Updated: <strong class="text-[color:var(--color-ink)]">{new Date(page.updated_at).toLocaleDateString()}</strong></p>
+          </div>
+        </div>
+
+        <div class="panel p-5">
+          <div class="kicker">Browse next</div>
+          <div class="mt-4 space-y-3 text-sm">
+            <a href="/wiki" class="block rounded-2xl bg-[color:var(--color-paper-strong)] px-4 py-3 font-semibold text-[color:var(--color-clay)]">Back to the archive</a>
+            <a href="/search" class="block rounded-2xl bg-[color:var(--color-paper-strong)] px-4 py-3 font-semibold text-[color:var(--color-clay)]">Search the site</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    {related.length > 0 && (
+      <section class="mt-10">
+        <div class="kicker">Related entries</div>
+        <div class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {related.map((entry) => (
+            <ArchiveCard entry={entry} />
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>

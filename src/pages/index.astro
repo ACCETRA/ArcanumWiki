@@ -1,0 +1,153 @@
+---
+import { getCollection } from "astro:content";
+import ArchiveCard from "@/components/ArchiveCard.astro";
+import GuideCard from "@/components/GuideCard.astro";
+import SectionIntro from "@/components/SectionIntro.astro";
+import ToolboxDeck from "@/components/ToolboxDeck";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getFeaturedArchive } from "@/lib/archive";
+import { CATEGORY_META, HOME_PORTALS } from "@/lib/categories";
+import { absoluteUrl } from "@/lib/site";
+
+const guides = (await getCollection("guides")).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+);
+const featuredGuides = guides.filter((guide) => guide.data.featured).slice(0, 3);
+const featuredArchive = getFeaturedArchive(4);
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "ArcanumWiki",
+  url: absoluteUrl("/"),
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${absoluteUrl("/search")}?term={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
+});
+---
+
+<BaseLayout
+  title="Human-made D&D tools, guides, and archive pages"
+  description="A static Astro launch for ArcanumWiki with public guides, browser-side generators, and a searchable archive."
+  path="/"
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={schema}></script>
+
+  <section class="shell pb-10 pt-10">
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <div>
+        <div class="eyebrow">No AI. No login wall. No ad clutter.</div>
+        <h1 class="mt-5 max-w-5xl text-5xl leading-tight text-[color:var(--color-ink)] md:text-7xl">
+          A handmade Dungeon Master toolkit built for
+          <span class="text-[color:var(--color-gold)]"> public reading first</span>.
+        </h1>
+        <p class="mt-6 max-w-3xl text-xl leading-9 text-[color:var(--color-ink-soft)]">
+          ArcanumWiki launches as a static Astro site: guides, reference pages, and browser-side generators that stay fast, searchable, and readable without a backend in the critical path.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/wiki" class="cta-primary">Browse the archive</a>
+          <a href="/guides" class="cta-secondary">Read the guides</a>
+          <a href="/search" class="cta-secondary">Search everything</a>
+        </div>
+
+        <div class="mt-8 grid gap-3 sm:grid-cols-3">
+          <div class="panel p-4">
+            <div class="kicker">Launch stack</div>
+            <p class="mt-2 text-lg text-[color:var(--color-ink)]">Astro, Tailwind, Pagefind</p>
+          </div>
+          <div class="panel p-4">
+            <div class="kicker">Runtime posture</div>
+            <p class="mt-2 text-lg text-[color:var(--color-ink)]">Static output, public HTML</p>
+          </div>
+          <div class="panel p-4">
+            <div class="kicker">Community phase</div>
+            <p class="mt-2 text-lg text-[color:var(--color-ink)]">Supabase later, not now</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="ink-panel px-6 py-6 md:px-7">
+        <div class="eyebrow border-white/10 bg-white/5 text-[color:var(--color-gold-soft)]">Launch manifesto</div>
+        <div class="mt-5 space-y-4 text-sm leading-7 text-[color:rgba(244,236,220,0.78)]">
+          <p>Every important page is public, crawlable, and useful before anyone signs in.</p>
+          <p>Generators run in the browser from curated tables stored in the repo.</p>
+          <p>Search is built at compile time with Pagefind, so there is no hosted search bill.</p>
+          <p>Supabase stays connected for the later submission and moderation phase, not for launch.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="shell py-8">
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      {HOME_PORTALS.map((portal) => (
+        <a href={`/wiki#${portal.category.toLowerCase()}`} class="panel block p-5 transition hover:-translate-y-0.5 hover:border-[color:var(--color-gold)]">
+          <div class="kicker">{portal.category}</div>
+          <h2 class="mt-3 text-2xl text-[color:var(--color-ink)]">{portal.title}</h2>
+          <p class="mt-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">{portal.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="shell py-12">
+    <SectionIntro
+      eyebrow="Featured guides"
+      title="Five practical guides for the first public release"
+      text="The launch brief called for original DM-facing guides. These are the first set: short, opinionated, and written to answer real table questions quickly."
+    />
+    <div class="mt-8 grid gap-5 lg:grid-cols-3">
+      {featuredGuides.map((guide) => (
+        <GuideCard guide={guide} />
+      ))}
+    </div>
+  </section>
+
+  <section class="shell py-12">
+    <SectionIntro
+      eyebrow="Generators"
+      title="Three tools that stay client-side"
+      text="NPC, loot, and name generation happen in the browser from curated tables stored in the repository. No account, no API, and no secret key required."
+    />
+    <div class="mt-8">
+      <ToolboxDeck client:load />
+    </div>
+  </section>
+
+  <section class="shell py-12">
+    <SectionIntro
+      eyebrow="Archive highlights"
+      title="Reference pages that already have something to say"
+      text="The archive keeps the useful connections: categories, related entries, credited authors, and page-level summaries that make search traffic worth having."
+    />
+    <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      {featuredArchive.map((entry) => (
+        <ArchiveCard entry={entry} />
+      ))}
+    </div>
+  </section>
+
+  <section class="shell py-12">
+    <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="panel p-6 md:p-7">
+        <div class="eyebrow">Why this build looks different</div>
+        <h2 class="mt-4 text-3xl text-[color:var(--color-ink)]">Everything non-essential moved out of the launch path.</h2>
+        <p class="mt-4 text-base leading-8 text-[color:var(--color-ink-soft)]">
+          The new structure keeps the content relationships and future Supabase connection points, but the public product now runs as a static site that can ship cheaply and be trusted immediately.
+        </p>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        {Object.entries(CATEGORY_META).slice(0, 4).map(([category, meta]) => (
+          <div class="panel p-5">
+            <div class="kicker">{category}</div>
+            <h3 class="mt-3 text-2xl text-[color:var(--color-ink)]">{meta.tagline}</h3>
+            <p class="mt-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">{meta.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

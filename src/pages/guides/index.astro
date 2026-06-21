@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import GuideCard from "@/components/GuideCard.astro";
+
+const guides = (await getCollection("guides")).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+);
+---
+
+<BaseLayout
+  title="Guides"
+  description="Read human-written D&D guides for campaign setup, pacing, prep, treasure, and long-form play."
+  path="/guides"
+>
+  <section class="shell py-12">
+    <div class="max-w-4xl">
+      <div class="eyebrow">Editorial shelf</div>
+      <h1 class="mt-5 text-5xl text-[color:var(--color-ink)] md:text-6xl">Guides for the questions DMs keep asking.</h1>
+      <p class="mt-5 text-lg leading-8 text-[color:var(--color-ink-soft)]">
+        These guides are short on filler and heavy on table use. They exist to make the next session easier to run, not to inflate word count.
+      </p>
+    </div>
+
+    <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {guides.map((guide) => (
+        <GuideCard guide={guide} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

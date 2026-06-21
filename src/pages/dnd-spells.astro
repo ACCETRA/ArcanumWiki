@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import CategoryHubPage from "@/components/CategoryHubPage.astro";
+---
+
+<BaseLayout
+  title="D&D Spells"
+  description="Practical spell notes with quick-reference summaries."
+  path="/dnd-spells"
+>
+  <CategoryHubPage
+    category="Spells"
+    eyebrow="Spell hub"
+    title="Spell pages that explain timing, value, and use"
+    text="The spell hub keeps the reading fast: what the spell is for, when it earns the slot, and what to watch for in actual play."
+  />
+</BaseLayout>

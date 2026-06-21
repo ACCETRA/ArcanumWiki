@@ -1,0 +1,30 @@
+---
+import ArchiveCard from "@/components/ArchiveCard.astro";
+import SectionIntro from "@/components/SectionIntro.astro";
+import type { Category } from "@/lib/categories";
+import { getEntriesByCategory } from "@/lib/archive";
+
+const {
+  category,
+  eyebrow,
+  title,
+  text,
+} = Astro.props as {
+  category: Category;
+  eyebrow: string;
+  title: string;
+  text: string;
+};
+
+const entries = getEntriesByCategory(category);
+---
+
+<section class="shell py-12">
+  <SectionIntro eyebrow={eyebrow} title={title} text={text} />
+
+  <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    {entries.map((entry) => (
+      <ArchiveCard entry={entry} />
+    ))}
+  </div>
+</section>

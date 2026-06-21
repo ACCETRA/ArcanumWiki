@@ -1,0 +1,38 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const principles = [
+  "Public HTML before community accounts.",
+  "No AI features in the launch product.",
+  "No ads interrupting the reading experience.",
+  "Generators that run in the browser from curated source data.",
+  "Supabase reserved for the later submission and moderation phase.",
+];
+---
+
+<BaseLayout
+  title="About"
+  description="ArcanumWiki is a human-made D&D toolkit built around static pages first and community features later."
+  path="/about"
+>
+  <section class="shell py-12">
+    <div class="grid gap-8 lg:grid-cols-[1fr_0.95fr]">
+      <div>
+        <div class="eyebrow">What ArcanumWiki is for</div>
+        <h1 class="mt-5 text-5xl text-[color:var(--color-ink)] md:text-6xl">A handmade D&D reference that chooses clarity over platform bloat.</h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-[color:var(--color-ink-soft)]">
+          The rebuild strips the launch down to what the public site actually needs: readable pages, practical guides, useful generators, search, and clear authorship. Accounts, submissions, and moderation can come later when those workflows are ready to be real.
+        </p>
+      </div>
+
+      <div class="panel p-6">
+        <div class="kicker">Launch rules</div>
+        <ul class="mt-4 space-y-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">
+          {principles.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
