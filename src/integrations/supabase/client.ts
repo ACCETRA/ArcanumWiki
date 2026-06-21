@@ -4,18 +4,15 @@ import type { Database } from './types';
 import { runtimeEnvValue } from '@/lib/runtime-env';
 
 function createSupabaseClient() {
-  // Prefer values injected by the Worker at request time, then fall back to
-  // build-time Vite envs and finally process.env for local SSR.
+  // Prefer runtime values when a host injects them, then build-time Vite envs.
   const SUPABASE_URL =
     runtimeEnvValue("VITE_SUPABASE_URL") ||
     runtimeEnvValue("SUPABASE_URL") ||
-    import.meta.env.VITE_SUPABASE_URL ||
-    process.env.SUPABASE_URL;
+    import.meta.env.VITE_SUPABASE_URL;
   const SUPABASE_PUBLISHABLE_KEY =
     runtimeEnvValue("VITE_SUPABASE_PUBLISHABLE_KEY") ||
     runtimeEnvValue("SUPABASE_PUBLISHABLE_KEY") ||
-    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-    process.env.SUPABASE_PUBLISHABLE_KEY;
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [

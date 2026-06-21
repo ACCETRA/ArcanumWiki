@@ -15,7 +15,7 @@ export async function GET(context) {
       title: guide.data.title,
       description: guide.data.description,
       pubDate: guide.data.publishedAt,
-      link: `/guides/${guide.slug}/`,
+      link: `/guides/${guide.id}/`,
     })),
   });
 }

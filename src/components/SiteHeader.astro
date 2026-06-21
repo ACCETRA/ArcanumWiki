@@ -4,34 +4,29 @@ import { siteConfig } from "@/lib/site";
 const nav = [
   { href: "/wiki", label: "Archive" },
   { href: "/guides", label: "Guides" },
+  { href: "/campaigns", label: "Campaigns" },
   { href: "/resources", label: "Tools" },
   { href: "/search", label: "Search" },
-  { href: "/contributors", label: "Contributors" },
+  { href: "/contributors", label: "Scribes" },
   { href: "/about", label: "About" },
 ];
 ---
 
-<header class="shell pt-5">
-  <div class="panel flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
-    <a href="/" class="flex items-center gap-4">
-      <img src="/brand-logo.png" alt="ArcanumWiki logo" class="h-12 w-12 rounded-full border border-[color:var(--color-line)] object-cover" />
-      <div>
-        <div class="font-[var(--font-title)] text-lg uppercase tracking-[0.22em] text-[color:var(--color-ink)]">
-          ArcanumWiki
-        </div>
-        <p class="text-sm text-[color:var(--color-ink-soft)]">{siteConfig.tagline}</p>
-      </div>
-    </a>
+<header class="site-header">
+  <a class="site-brand" href="/" aria-label="ArcanumWiki home">
+    <span class="site-mark" aria-hidden="true"><span></span></span>
+    <span>
+      <strong>ArcanumWiki</strong>
+      <small>{siteConfig.tagline}</small>
+    </span>
+  </a>
 
-    <nav class="flex flex-wrap gap-2 text-sm font-semibold text-[color:var(--color-ink-soft)]">
-      {nav.map((item) => (
-        <a href={item.href} class="rounded-full px-3 py-2 transition hover:text-[color:var(--color-gold)]">
-          {item.label}
-        </a>
-      ))}
-      <a href={siteConfig.donateUrl} class="cta-primary px-4 py-2" rel="noreferrer" target="_blank">
-        Support the archive
-      </a>
-    </nav>
-  </div>
+  <nav class="site-nav" aria-label="Primary navigation">
+    {nav.map((item) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+    <a class="site-support" href={siteConfig.donateUrl} rel="noreferrer" target="_blank">
+      Support
+    </a>
+  </nav>
 </header>

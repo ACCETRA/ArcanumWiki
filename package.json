@@ -19,11 +19,16 @@
     "@fontsource/source-sans-3": "^5.2.9",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.3.1",
-    "astro": "^5.18.2",
+    "astro": "6.4.8",
     "marked": "^16.4.2",
     "pagefind": "^1.5.2",
     "preact": "^10.29.2",
     "tailwindcss": "^4.3.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "7.3.5"
+  },
+  "overrides": {
+    "esbuild": "0.27.2",
+    "yaml": "^2.9.0"
   }
 }

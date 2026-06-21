@@ -583,7 +583,7 @@ const PAGE_SPECS: SeedPageSpec[] = [
   {
     slug: "lost-mine-primer",
     title: "Lost Mine of Phandelver Primer",
-    summary: "A starter campaign note that reads like a useful table handout, not a placeholder.",
+    summary: "A starter campaign note with concrete prep value for a first table handout.",
     category: "Campaigns",
     author: "mira",
     updatedAt: "2026-06-19T08:10:00.000Z",

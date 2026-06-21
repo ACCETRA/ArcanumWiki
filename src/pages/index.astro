@@ -1,19 +1,47 @@
 ---
 import { getCollection } from "astro:content";
-import ArchiveCard from "@/components/ArchiveCard.astro";
-import GuideCard from "@/components/GuideCard.astro";
-import SectionIntro from "@/components/SectionIntro.astro";
-import ToolboxDeck from "@/components/ToolboxDeck";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getFeaturedArchive } from "@/lib/archive";
-import { CATEGORY_META, HOME_PORTALS } from "@/lib/categories";
+import { getEntriesByCategory } from "@/lib/archive";
+import { HOME_PORTALS } from "@/lib/categories";
+import { getSeedContributors, getSeedStats } from "@/lib/seed-content";
 import { absoluteUrl } from "@/lib/site";
 
 const guides = (await getCollection("guides")).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
 );
 const featuredGuides = guides.filter((guide) => guide.data.featured).slice(0, 3);
-const featuredArchive = getFeaturedArchive(4);
+const campaignEntries = getEntriesByCategory("Campaigns").slice(0, 3);
+const stats = getSeedStats();
+const contributors = getSeedContributors().slice(0, 4);
+
+const rosterAuras = [
+  "rgba(69, 104, 74, 0.58)",
+  "rgba(94, 87, 124, 0.58)",
+  "rgba(139, 91, 45, 0.58)",
+  "rgba(61, 102, 107, 0.58)",
+];
+
+const roster = contributors.map((person, index) => ({
+  ...person,
+  aura: rosterAuras[index % rosterAuras.length],
+  label: `${person.pages_created} pages created`,
+}));
+
+const statStrip = [
+  { label: "Archive Pages", value: `${stats.pages} public entries` },
+  { label: "Guide Hall", value: `${guides.length} handmade guides` },
+  { label: "Contributors", value: `${stats.people} named scribes` },
+  { label: "Campaign Shelf", value: `${campaignEntries.length} active primers` },
+];
+
+const questBoard = campaignEntries.map((entry, index) => ({
+  stage: `Shelf ${String(index + 1).padStart(2, "0")}`,
+  title: entry.title,
+  text: entry.summary,
+  reward: entry.profiles.display_name,
+  href: `/wiki/${entry.slug}`,
+}));
+
 const schema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -28,126 +56,809 @@ const schema = JSON.stringify({
 ---
 
 <BaseLayout
-  title="Human-made D&D tools, guides, and archive pages"
-  description="A static Astro launch for ArcanumWiki with public guides, browser-side generators, and a searchable archive."
+  title="A quieter fantasy archive for sharper sessions"
+  description="ArcanumWiki presents lore, campaign primers, contributors, and guides in a darker editorial fantasy homepage inspired by the Eldermere template."
   path="/"
+  hideHeader
+  hideFooter
 >
   <script is:inline slot="head" type="application/ld+json" set:html={schema}></script>
 
-  <section class="shell pb-10 pt-10">
-    <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-      <div>
-        <div class="eyebrow">No AI. No login wall. No ad clutter.</div>
-        <h1 class="mt-5 max-w-5xl text-5xl leading-tight text-[color:var(--color-ink)] md:text-7xl">
-          A handmade Dungeon Master toolkit built for
-          <span class="text-[color:var(--color-gold)]"> public reading first</span>.
-        </h1>
-        <p class="mt-6 max-w-3xl text-xl leading-9 text-[color:var(--color-ink-soft)]">
-          ArcanumWiki launches as a static Astro site: guides, reference pages, and browser-side generators that stay fast, searchable, and readable without a backend in the critical path.
-        </p>
-
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="/wiki" class="cta-primary">Browse the archive</a>
-          <a href="/guides" class="cta-secondary">Read the guides</a>
-          <a href="/search" class="cta-secondary">Search everything</a>
-        </div>
-
-        <div class="mt-8 grid gap-3 sm:grid-cols-3">
-          <div class="panel p-4">
-            <div class="kicker">Launch stack</div>
-            <p class="mt-2 text-lg text-[color:var(--color-ink)]">Astro, Tailwind, Pagefind</p>
-          </div>
-          <div class="panel p-4">
-            <div class="kicker">Runtime posture</div>
-            <p class="mt-2 text-lg text-[color:var(--color-ink)]">Static output, public HTML</p>
-          </div>
-          <div class="panel p-4">
-            <div class="kicker">Community phase</div>
-            <p class="mt-2 text-lg text-[color:var(--color-ink)]">Supabase later, not now</p>
-          </div>
-        </div>
-      </div>
-
-      <aside class="ink-panel px-6 py-6 md:px-7">
-        <div class="eyebrow border-white/10 bg-white/5 text-[color:var(--color-gold-soft)]">Launch manifesto</div>
-        <div class="mt-5 space-y-4 text-sm leading-7 text-[color:rgba(244,236,220,0.78)]">
-          <p>Every important page is public, crawlable, and useful before anyone signs in.</p>
-          <p>Generators run in the browser from curated tables stored in the repo.</p>
-          <p>Search is built at compile time with Pagefind, so there is no hosted search bill.</p>
-          <p>Supabase stays connected for the later submission and moderation phase, not for launch.</p>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <section class="shell py-8">
-    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-      {HOME_PORTALS.map((portal) => (
-        <a href={`/wiki#${portal.category.toLowerCase()}`} class="panel block p-5 transition hover:-translate-y-0.5 hover:border-[color:var(--color-gold)]">
-          <div class="kicker">{portal.category}</div>
-          <h2 class="mt-3 text-2xl text-[color:var(--color-ink)]">{portal.title}</h2>
-          <p class="mt-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">{portal.description}</p>
+  <main class="home-site">
+    <div class="home-shell">
+      <header class="home-header">
+        <a class="home-brand" href="/">
+          <span class="home-mark" aria-hidden="true"><span></span></span>
+          ArcanumWiki
         </a>
-      ))}
-    </div>
-  </section>
 
-  <section class="shell py-12">
-    <SectionIntro
-      eyebrow="Featured guides"
-      title="Five practical guides for the first public release"
-      text="The launch brief called for original DM-facing guides. These are the first set: short, opinionated, and written to answer real table questions quickly."
-    />
-    <div class="mt-8 grid gap-5 lg:grid-cols-3">
-      {featuredGuides.map((guide) => (
-        <GuideCard guide={guide} />
-      ))}
-    </div>
-  </section>
+        <nav class="home-nav" aria-label="Primary navigation">
+          <a href="#realm">Realm</a>
+          <a href="#lore">Lore</a>
+          <a href="#guilds">Guilds</a>
+          <a href="#quests">Quests</a>
+          <a href="#guides">Guides</a>
+        </nav>
+      </header>
 
-  <section class="shell py-12">
-    <SectionIntro
-      eyebrow="Generators"
-      title="Three tools that stay client-side"
-      text="NPC, loot, and name generation happen in the browser from curated tables stored in the repository. No account, no API, and no secret key required."
-    />
-    <div class="mt-8">
-      <ToolboxDeck client:load />
-    </div>
-  </section>
+      <section class="home-hero" id="realm">
+        <div class="home-copy">
+          <div class="home-kicker">Handmade fantasy archive</div>
+          <h1>A quieter realm for sharper session prep.</h1>
+          <p class="home-intro">
+            ArcanumWiki keeps the public reading flow first: lore pages, class notes,
+            campaign primers, and human-written guides arranged like a dark-fantasy
+            field manual instead of a startup landing page.
+          </p>
 
-  <section class="shell py-12">
-    <SectionIntro
-      eyebrow="Archive highlights"
-      title="Reference pages that already have something to say"
-      text="The archive keeps the useful connections: categories, related entries, credited authors, and page-level summaries that make search traffic worth having."
-    />
-    <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-      {featuredArchive.map((entry) => (
-        <ArchiveCard entry={entry} />
-      ))}
-    </div>
-  </section>
+          <div class="home-actions">
+            <a class="home-button" href="/wiki">Enter the Archive</a>
+            <a class="home-button secondary" href="/guides">Read the Guides</a>
+          </div>
+        </div>
 
-  <section class="shell py-12">
-    <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-      <div class="panel p-6 md:p-7">
-        <div class="eyebrow">Why this build looks different</div>
-        <h2 class="mt-4 text-3xl text-[color:var(--color-ink)]">Everything non-essential moved out of the launch path.</h2>
-        <p class="mt-4 text-base leading-8 text-[color:var(--color-ink-soft)]">
-          The new structure keeps the content relationships and future Supabase connection points, but the public product now runs as a static site that can ship cheaply and be trusted immediately.
-        </p>
-      </div>
+        <aside class="home-mapCard" aria-label="Map of the archive">
+          <div class="home-mapTitle">
+            <span>Map of Arcanum</span>
+            <span>Public Index</span>
+          </div>
 
-      <div class="grid gap-4 md:grid-cols-2">
-        {Object.entries(CATEGORY_META).slice(0, 4).map(([category, meta]) => (
-          <div class="panel p-5">
-            <div class="kicker">{category}</div>
-            <h3 class="mt-3 text-2xl text-[color:var(--color-ink)]">{meta.tagline}</h3>
-            <p class="mt-3 text-sm leading-7 text-[color:var(--color-ink-soft)]">{meta.description}</p>
+          <svg viewBox="0 0 520 390" role="img" aria-label="Illustrated fantasy map">
+            <path
+              d="M83 204 C62 162 78 108 123 86 C171 62 214 87 235 125 C258 99 304 78 350 91 C410 108 443 159 426 219 C471 242 475 309 426 338 C377 368 320 344 296 305 C263 344 203 351 165 314 C126 344 69 318 66 264 C65 241 72 220 83 204Z"
+              fill="#b79762"
+              stroke="#3d2b18"
+              stroke-width="3"
+            />
+            <path
+              d="M151 121 C181 148 180 185 153 208 C188 222 205 254 194 291"
+              fill="none"
+              stroke="#5d4326"
+              stroke-width="2"
+              stroke-dasharray="7 7"
+            />
+            <path
+              d="M248 132 C281 160 294 190 279 225 C315 221 356 240 377 284"
+              fill="none"
+              stroke="#5d4326"
+              stroke-width="2"
+              stroke-dasharray="7 7"
+            />
+            <path
+              d="M108 249 C153 236 190 238 226 254 C263 270 311 270 377 245"
+              fill="none"
+              stroke="#3f5b59"
+              stroke-width="8"
+              stroke-linecap="round"
+              opacity=".75"
+            />
+            <g fill="#3d2b18">
+              <path d="M150 155 l18 34 h-36z" />
+              <path d="M174 151 l22 42 h-44z" />
+              <path d="M329 148 l20 38 h-40z" />
+              <path d="M351 142 l24 46 h-48z" />
+            </g>
+            <g stroke="#3d2b18" stroke-width="2" fill="none">
+              <circle cx="232" cy="250" r="16" />
+              <path d="M232 234 v32 M216 250 h32" />
+              <circle cx="386" cy="211" r="12" />
+              <path d="M386 199 v24 M374 211 h24" />
+            </g>
+            <g fill="#3d2b18" font-family="Georgia, serif" font-size="16">
+              <text x="106" y="82">Lore Shelf</text>
+              <text x="300" y="122">Class Hall</text>
+              <text x="194" y="305">Guide Road</text>
+              <text x="344" y="334">Quest Board</text>
+            </g>
+            <path
+              d="M437 55 l18 8 -18 8 -8 18 -8-18 -18-8 18-8 8-18z"
+              fill="none"
+              stroke="#3d2b18"
+              stroke-width="2"
+            />
+          </svg>
+
+          <p class="home-mapNote">
+            The map panel now acts like a quiet portal into the archive. From here,
+            people can drift into lore, campaigns, guides, or the broader public wiki.
+          </p>
+        </aside>
+      </section>
+
+      <section class="home-statStrip" aria-label="Archive summary">
+        {statStrip.map((stat) => (
+          <div class="home-stat">
+            <strong>{stat.label}</strong>
+            <span>{stat.value}</span>
           </div>
         ))}
-      </div>
+      </section>
+
+      <section class="home-section" id="lore">
+        <div class="home-container">
+          <div class="home-sectionTitle">
+            <div class="home-kicker">Lore paths</div>
+            <h2>Built for fantasy readers who want structure, not clutter.</h2>
+          </div>
+
+          <div class="home-cardGrid">
+            {HOME_PORTALS.map((portal, index) => (
+              <article class="home-panel">
+                <div class="home-number">0{index + 1}</div>
+                <h3>
+                  <a href={`/wiki#${portal.category.toLowerCase()}`}>{portal.title}</a>
+                </h3>
+                <p>{portal.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section" id="guilds">
+        <div class="home-container">
+          <div class="home-sectionTitle">
+            <div class="home-kicker">Guild roster</div>
+            <h2>Contributors with enough atmosphere to feel intentionally placed.</h2>
+          </div>
+
+          <div class="home-characterGrid">
+            {roster.map((person) => (
+              <article class="home-panel home-character" style={`--aura: ${person.aura}`}>
+                <div class="home-characterContent">
+                  <small>{person.label}</small>
+                  <h3>{person.display_name}</h3>
+                  <p>{person.bio}</p>
+                  <a class="home-inlineLink" href="/contributors">Open contributor shelf</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section" id="quests">
+        <div class="home-container">
+          <div class="home-sectionTitle">
+            <div class="home-kicker">Quest board</div>
+            <h2>Campaign primers that already sound like adventures waiting to start.</h2>
+          </div>
+
+          <div class="home-timeline">
+            {questBoard.map((quest) => (
+              <article class="home-quest">
+                <strong>{quest.stage}</strong>
+                <div>
+                  <h3>
+                    <a href={quest.href}>{quest.title}</a>
+                  </h3>
+                  <p>{quest.text}</p>
+                </div>
+                <span class="home-reward">{quest.reward}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section" id="guides">
+        <div class="home-container">
+          <div class="home-sectionTitle">
+            <div class="home-kicker">Guide hall</div>
+            <h2>Field notes that stay practical, short, and easy to return to.</h2>
+          </div>
+
+          <div class="home-guideGrid">
+            {featuredGuides.map((guide) => (
+              <article class="home-panel home-guide">
+                <div class="home-guideMeta">
+                  <span>{guide.data.author}</span>
+                  <span>{guide.data.publishedAt.toLocaleDateString()}</span>
+                </div>
+                <h3>
+                  <a href={`/guides/${guide.id}`}>{guide.data.title}</a>
+                </h3>
+                <p>{guide.data.description}</p>
+                <div class="home-tagRow">
+                  {guide.data.tags.slice(0, 3).map((tag) => (
+                    <span>{tag}</span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div class="home-finalCta">
+            <div>
+              <div class="home-kicker">Open the stacks</div>
+              <h2>Archive routes, search, and browser-side tools are ready to use.</h2>
+              <p>
+                The homepage now leads into the live archive, public guides, local search,
+                and the `/resources` tool shelf without asking readers to sign in first.
+              </p>
+            </div>
+
+            <div class="home-finalActions">
+              <a class="home-button" href="/wiki">Browse the Archive</a>
+              <a class="home-button secondary" href="/resources">Open the Tools</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="home-footer">
+        <span>ArcanumWiki</span>
+        <span>Public archive, handmade guides, and quieter dark-fantasy framing.</span>
+      </footer>
     </div>
-  </section>
+  </main>
 </BaseLayout>
+
+<style>
+  .home-site {
+    min-height: 100vh;
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      radial-gradient(circle at 18% 10%, rgba(152, 105, 44, 0.18), transparent 32%),
+      radial-gradient(circle at 82% 20%, rgba(41, 66, 57, 0.38), transparent 34%),
+      linear-gradient(135deg, #11160f, #17130f 45%, #0b0e0b);
+    background-size: 36px 36px, 36px 36px, auto, auto, auto;
+    padding: 1.5rem;
+    color: #eadcc0;
+  }
+
+  .home-shell {
+    position: relative;
+    min-height: calc(100vh - 3rem);
+    overflow: hidden;
+    border: 1px solid rgba(220, 187, 123, 0.28);
+    animation: frame-in 520ms ease both;
+  }
+
+  .home-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0.875rem;
+    border: 1px solid rgba(220, 187, 123, 0.16);
+    pointer-events: none;
+  }
+
+  .home-container {
+    width: min(1180px, calc(100vw - 4rem));
+    margin: 0 auto;
+  }
+
+  .home-header {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.75rem 2.625rem;
+    border-bottom: 1px solid rgba(220, 187, 123, 0.18);
+    animation: section-rise 560ms ease 80ms both;
+  }
+
+  .home-brand {
+    display: flex;
+    gap: 0.875rem;
+    align-items: center;
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #e1bf75;
+  }
+
+  .home-mark {
+    display: grid;
+    place-items: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border: 1px solid #b98a43;
+    transform: rotate(45deg);
+  }
+
+  .home-mark span {
+    display: block;
+    width: 0.8125rem;
+    height: 0.8125rem;
+    border: 1px solid #e1bf75;
+    background: #17120b;
+  }
+
+  .home-nav {
+    display: flex;
+    gap: 1.625rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #bcae95;
+  }
+
+  .home-nav a,
+  .home-inlineLink,
+  .home-guide h3 a,
+  .home-quest h3 a,
+  .home-panel h3 a {
+    transition: color 180ms ease;
+  }
+
+  .home-nav a:hover,
+  .home-inlineLink:hover,
+  .home-guide h3 a:hover,
+  .home-quest h3 a:hover,
+  .home-panel h3 a:hover {
+    color: #f2dfb8;
+  }
+
+  .home-hero {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3rem;
+    align-items: center;
+    min-height: 44rem;
+    padding: 3.375rem 6vw 2.625rem;
+  }
+
+  .home-copy {
+    max-width: 45rem;
+    animation: section-rise 620ms ease 140ms both;
+  }
+
+  .home-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 1.125rem;
+    color: #d1a75b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .home-kicker::before {
+    content: "";
+    width: 2.625rem;
+    height: 1px;
+    background: #a97832;
+  }
+
+  .home-copy h1,
+  .home-sectionTitle h2,
+  .home-panel h3,
+  .home-finalCta h2,
+  .home-quest h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #f2dfb8;
+  }
+
+  .home-copy h1 {
+    margin: 0;
+    max-width: 10ch;
+    font-size: clamp(3.5rem, 7.2vw, 6.25rem);
+    line-height: 0.92;
+  }
+
+  .home-intro,
+  .home-mapNote,
+  .home-panel p,
+  .home-quest p,
+  .home-finalCta p {
+    color: #bcae95;
+    line-height: 1.7;
+  }
+
+  .home-intro {
+    max-width: 35rem;
+    margin: 1.5rem 0 2.125rem;
+    font-size: 1.05rem;
+  }
+
+  .home-actions,
+  .home-finalActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+    align-items: center;
+  }
+
+  .home-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.875rem;
+    border: 1px solid #b98a43;
+    background: #d7ad60;
+    padding: 0.875rem 1.375rem;
+    color: #18120a;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+  }
+
+  .home-button.secondary {
+    background: transparent;
+    color: #e1bf75;
+  }
+
+  .home-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .home-mapCard {
+    position: relative;
+    min-height: 32.5rem;
+    border: 1px solid rgba(220, 187, 123, 0.35);
+    background: linear-gradient(rgba(48, 34, 19, 0.08), rgba(48, 34, 19, 0.08)), #d4bd8e;
+    padding: 1.75rem;
+    color: #2b2217;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
+    animation: section-rise 620ms ease 220ms both;
+  }
+
+  .home-mapCard::before {
+    content: "";
+    position: absolute;
+    inset: 0.75rem;
+    border: 1px solid rgba(68, 49, 29, 0.28);
+  }
+
+  .home-mapTitle {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    color: #47331d;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .home-mapCard svg {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 24.375rem;
+  }
+
+  .home-mapNote {
+    position: relative;
+    z-index: 2;
+    max-width: 24rem;
+    margin: 0.75rem 0 0;
+    color: #624b2e;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  .home-statStrip {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(220, 187, 123, 0.18);
+    border-bottom: 1px solid rgba(220, 187, 123, 0.18);
+  }
+
+  .home-stat {
+    padding: 1.75rem 2.125rem;
+    border-right: 1px solid rgba(220, 187, 123, 0.18);
+    animation: panel-in 460ms ease both;
+  }
+
+  .home-stat:last-child {
+    border-right: 0;
+  }
+
+  .home-stat strong {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: #d1a75b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .home-stat span {
+    color: #f0d8a9;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+  }
+
+  .home-section {
+    position: relative;
+    z-index: 2;
+    padding: 5.375rem 0;
+  }
+
+  .home-sectionTitle {
+    max-width: 47.5rem;
+    margin-bottom: 2.125rem;
+    animation: section-rise 520ms ease both;
+  }
+
+  .home-sectionTitle h2,
+  .home-finalCta h2 {
+    margin: 0;
+    font-size: clamp(2.4rem, 5vw, 4.125rem);
+    line-height: 1;
+  }
+
+  .home-cardGrid,
+  .home-characterGrid,
+  .home-guideGrid {
+    display: grid;
+    gap: 1.125rem;
+  }
+
+  .home-cardGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .home-characterGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .home-guideGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .home-panel {
+    border: 1px solid rgba(220, 187, 123, 0.22);
+    background: rgba(16, 18, 14, 0.76);
+    padding: 1.75rem;
+    animation: panel-in 500ms ease both;
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+
+  .home-panel:hover {
+    transform: translateY(-2px);
+    border-color: rgba(220, 187, 123, 0.42);
+  }
+
+  .home-panel h3,
+  .home-quest h3 {
+    margin: 0;
+    font-size: 1.7rem;
+  }
+
+  .home-panel p {
+    margin-bottom: 0;
+  }
+
+  .home-number {
+    margin-bottom: 1.125rem;
+    color: #d1a75b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  .home-character {
+    position: relative;
+    display: flex;
+    min-height: 22.5rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .home-character::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 22%, var(--aura), transparent 26%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 34%);
+    opacity: 0.9;
+  }
+
+  .home-character::after {
+    content: "";
+    position: absolute;
+    top: 4.5rem;
+    left: 50%;
+    width: 5.75rem;
+    height: 10.375rem;
+    transform: translateX(-50%);
+    border: 1px solid rgba(242, 223, 184, 0.45);
+    border-radius: 3rem 3rem 1.125rem 1.125rem;
+    background: linear-gradient(180deg, rgba(242, 223, 184, 0.18), rgba(0, 0, 0, 0.1));
+  }
+
+  .home-characterContent {
+    position: relative;
+    z-index: 2;
+  }
+
+  .home-character small {
+    color: #d1a75b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .home-inlineLink {
+    display: inline-flex;
+    margin-top: 0.85rem;
+    color: #e1bf75;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .home-timeline {
+    display: grid;
+    gap: 0.875rem;
+  }
+
+  .home-quest {
+    display: grid;
+    grid-template-columns: 8.75rem 1fr auto;
+    gap: 1.375rem;
+    align-items: center;
+    border: 1px solid rgba(220, 187, 123, 0.22);
+    background: rgba(16, 18, 14, 0.58);
+    padding: 1.25rem 1.375rem;
+    animation: panel-in 500ms ease both;
+  }
+
+  .home-quest strong {
+    color: #d1a75b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .home-quest p {
+    margin: 0.35rem 0 0;
+  }
+
+  .home-reward {
+    color: #f0d8a9;
+    font-family: var(--font-display);
+    white-space: nowrap;
+  }
+
+  .home-guideMeta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #d1a75b;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .home-tagRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .home-tagRow span {
+    border: 1px solid rgba(220, 187, 123, 0.22);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.35rem 0.65rem;
+    color: #e1bf75;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .home-finalCta {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 5.25rem;
+    border: 1px solid rgba(220, 187, 123, 0.28);
+    background:
+      radial-gradient(circle at 80% 20%, rgba(209, 167, 91, 0.18), transparent 28%),
+      rgba(16, 18, 14, 0.68);
+    padding: 2.875rem;
+    animation: section-rise 540ms ease both;
+  }
+
+  .home-finalCta p {
+    max-width: 40rem;
+    margin-bottom: 0;
+  }
+
+  .home-footer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(220, 187, 123, 0.18);
+    padding: 1.75rem 2.625rem;
+    color: #8e806b;
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 1100px) {
+    .home-cardGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-characterGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-guideGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .home-site {
+      padding: 0.75rem;
+    }
+
+    .home-shell {
+      min-height: calc(100vh - 1.5rem);
+    }
+
+    .home-container {
+      width: min(100% - 2rem, 1180px);
+    }
+
+    .home-header {
+      padding: 1.375rem;
+    }
+
+    .home-nav {
+      display: none;
+    }
+
+    .home-hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      padding: 2.625rem 1.5rem;
+    }
+
+    .home-mapCard {
+      min-height: auto;
+    }
+
+    .home-statStrip,
+    .home-cardGrid,
+    .home-characterGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .home-stat {
+      border-right: 0;
+      border-bottom: 1px solid rgba(220, 187, 123, 0.18);
+    }
+
+    .home-quest,
+    .home-finalCta {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

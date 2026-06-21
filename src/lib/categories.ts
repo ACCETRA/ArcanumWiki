@@ -41,19 +41,22 @@ export const CATEGORY_META: Record<Category, CategoryMeta> = {
       summary: "A plain answer on who this class serves and what it does well.",
       content: `# Overview
 
-Describe the class fantasy, table role, and where it shines.
+This class is strongest when the page explains the fantasy, the table role, and the decisions a player makes turn by turn.
 
 ## Core strengths
 
-- 
+- Reliable contribution in the scenes it is built for.
+- A clear party role that helps new players choose confidently.
+- Build choices that change feel without hiding the basic loop.
 
 ## Watch for
 
-- 
+- A class can feel flat if the page only lists mechanics.
+- Subclass identity needs its own note once the core loop is clear.
 
 ## Party fit
 
-- 
+- Explain who this class protects, enables, pressures, or follows up on.
 `,
     },
   },
@@ -68,19 +71,22 @@ Describe the class fantasy, table role, and where it shines.
       summary: "What this lineage feels like in play and why a player might choose it.",
       content: `# Overview
 
-Summarize the lineage and what it brings to the campaign.
+This lineage page should make ancestry, culture, and story hooks feel usable during character creation.
 
 ## Traits that matter
 
-- 
+- Highlight the traits players will remember in actual scenes.
+- Explain where those traits change tactics, travel, or social play.
 
 ## Culture and customs
 
-- 
+- Name one everyday custom that makes this people feel specific.
+- Tie that custom to a place, trade, institution, or old conflict.
 
 ## Story hooks
 
-- 
+- Give the player a reason to belong somewhere.
+- Give the DM a reason this background matters in the current campaign.
 `,
     },
   },
@@ -97,19 +103,20 @@ Summarize the lineage and what it brings to the campaign.
 
 | Field | Value |
 | --- | --- |
-| Level |  |
-| School |  |
-| Casting Time |  |
-| Range |  |
-| Duration |  |
+| Level | Confirm at table |
+| School | Confirm at table |
+| Casting Time | Confirm at table |
+| Range | Confirm at table |
+| Duration | Confirm at table |
 
 ## When it earns the slot
 
-- 
+- Use this spell when its timing, target, or certainty solves the immediate problem.
+- Call out the party plan that makes the spell better than a simple damage option.
 
 ## Watch for
 
-- 
+- Explain the save, reaction, concentration, or component cost that players forget.
 `,
     },
   },
@@ -126,21 +133,23 @@ Summarize the lineage and what it brings to the campaign.
 
 | Field | Value |
 | --- | --- |
-| Threat |  |
-| Terrain |  |
-| Role |  |
+| Threat | Depends on party level and numbers |
+| Terrain | Choose terrain that supports the monster's behavior |
+| Role | Define what pressure it adds to the encounter |
 
 ## Behavior
 
-- 
+- Describe what the creature wants before initiative starts.
+- Give it one habit that changes how players read the scene.
 
 ## Tactics
 
-- 
+- Start with the first two rounds, then explain what changes when it is hurt.
+- Note when it flees, bargains, protects something, or escalates.
 
 ## Treasure or aftermath
 
-- 
+- Leave one clue, reward, consequence, or rumor behind after the encounter.
 `,
     },
   },
@@ -157,17 +166,18 @@ Summarize the lineage and what it brings to the campaign.
 
 | Field | Value |
 | --- | --- |
-| Rarity |  |
-| Type |  |
-| Attunement |  |
+| Rarity | Confirm at table |
+| Type | Gear, relic, consumable, or tool |
+| Attunement | Yes, no, or table-specific |
 
 ## Best use
 
-- 
+- Explain the scene where the item becomes worth tracking.
+- Mention who in the party benefits most and why.
 
 ## Story hook
 
-- 
+- Give the item a maker, previous owner, rumor, flaw, or visible mark.
 `,
     },
   },
@@ -182,19 +192,21 @@ Summarize the lineage and what it brings to the campaign.
       summary: "What matters about this setting detail right now.",
       content: `# Overview
 
-Explain the idea in table-ready language.
+Explain the place, faction, myth, or history in language a DM can use during prep.
 
 ## Why it matters
 
-- 
+- State the current pressure it creates in the world.
+- Tie the detail to a choice players may actually make.
 
 ## Current pressure points
 
-- 
+- Name who wants it protected, changed, exposed, or buried.
+- Name what happens if nobody acts.
 
 ## Hooks
 
-- 
+- Offer a social hook, a travel hook, and a danger hook.
 `,
     },
   },
@@ -209,17 +221,21 @@ Explain the idea in table-ready language.
       summary: "The premise, tone, and what a DM should prep first.",
       content: `# Premise
 
+State the campaign promise in one paragraph: what the party does, what pressure is rising, and why the first session matters.
+
 ## Starting hook
 
-- 
+- Give the group a clear reason to act together.
+- Put a named place, person, or object in immediate trouble.
 
 ## What to prep first
 
-- 
+- Prepare the opening scene, three useful NPCs, and one consequence if the party delays.
+- Keep the first map or location small enough to run without a lore lecture.
 
 ## Tone and pressure
 
-- 
+- Explain whether the campaign rewards caution, heroics, intrigue, horror, or discovery.
 `,
     },
   },
@@ -234,17 +250,21 @@ Explain the idea in table-ready language.
       summary: "What the rule or creation is trying to fix, add, or sharpen.",
       content: `# Concept
 
+Describe the rule, item, class option, spell, or subsystem in one direct paragraph.
+
 ## Problem it solves
 
-- 
+- Name the table problem or fantasy gap this homebrew addresses.
+- Say what the existing rules do not handle well enough.
 
 ## Rule text
 
-- 
+- Write the playable rule as clearly as it would appear in a handout.
+- Include costs, limits, timing, and who makes each decision.
 
 ## Playtest notes
 
-- 
+- Record the strongest use case, the easiest abuse case, and what to watch in session.
 `,
     },
   },
@@ -291,7 +311,7 @@ export const HOME_PORTALS = [
   },
   {
     title: "Test new rules",
-    description: "Keep homebrew experiments visible, credited, and easy to revisit later.",
+    description: "Keep homebrew experiments visible, credited, and easy to retest after play.",
     category: "Homebrew" as Category,
   },
 ] as const;

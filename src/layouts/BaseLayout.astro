@@ -8,12 +8,16 @@ type Props = {
   title?: string;
   description?: string;
   path?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 };
 
 const {
   title = siteConfig.name,
   description = siteConfig.description,
   path = "/",
+  hideHeader = false,
+  hideFooter = false,
 } = Astro.props;
 
 const canonical = absoluteUrl(path);
@@ -28,7 +32,7 @@ const pageTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.n
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#f4ecdc" />
+    <meta name="theme-color" content="#11160f" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/png" href="/brand-logo.png" />
     <meta property="og:type" content="website" />
@@ -36,20 +40,27 @@ const pageTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.n
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:image" content={absoluteUrl("/brand-logo.png")} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteUrl("/brand-logo.png")} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} Guides`} href="/rss.xml" />
     <slot name="head" />
   </head>
   <body>
-    <div class="relative overflow-hidden">
-      <div class="absolute inset-x-0 top-0 -z-10 h-[38rem] bg-[radial-gradient(circle_at_top,rgba(184,137,46,0.18),transparent_50%)]"></div>
-      <div class="absolute inset-x-0 bottom-0 -z-10 h-[30rem] bg-[radial-gradient(circle_at_bottom_right,rgba(53,84,72,0.18),transparent_45%)]"></div>
-      <SiteHeader />
-      <main>
-        <slot />
-      </main>
-      <SiteFooter />
-    </div>
+    {hideHeader && hideFooter ? (
+      <slot />
+    ) : (
+      <div class="template-site">
+        <div class="template-frame">
+          {!hideHeader && <SiteHeader />}
+          <main class="template-main">
+            <slot />
+          </main>
+          {!hideFooter && <SiteFooter />}
+        </div>
+      </div>
+    )}
   </body>
 </html>

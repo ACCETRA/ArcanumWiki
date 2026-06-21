@@ -8,7 +8,7 @@ const contributors = getSeedContributors();
 
 <BaseLayout
   title="Contributors"
-  description="Meet the credited contributors behind the seeded ArcanumWiki archive."
+  description="Meet the credited contributors behind the curated ArcanumWiki archive."
   path="/contributors"
 >
   <section class="shell py-12">
@@ -16,7 +16,7 @@ const contributors = getSeedContributors();
       <div class="eyebrow">Visible authorship</div>
       <h1 class="mt-5 text-5xl text-[color:var(--color-ink)] md:text-6xl">Credited people, not faceless content churn.</h1>
       <p class="mt-5 text-lg leading-8 text-[color:var(--color-ink-soft)]">
-        The launch keeps authors visible even before community profiles arrive. Each seeded page points back here so readers can see who shaped the archive.
+        Each curated page points back here so readers can see who shaped the archive and what kind of work they contributed.
       </p>
     </div>
 
@@ -27,7 +27,7 @@ const contributors = getSeedContributors();
           <article class="panel p-6" id={contributor.username}>
             <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
-                <div class="kicker">{contributor.edit_count} seeded edits</div>
+                <div class="kicker">{contributor.edit_count} archive edits</div>
                 <h2 class="mt-3 text-3xl text-[color:var(--color-ink)]">{contributor.display_name}</h2>
                 <p class="mt-3 text-base leading-8 text-[color:var(--color-ink-soft)]">{contributor.bio}</p>
               </div>

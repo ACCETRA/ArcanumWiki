@@ -4,10 +4,12 @@ import { createClient } from "@supabase/supabase-js";
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const PUBLIC_CONTENT_SOURCE = process.env.PUBLIC_CONTENT_SOURCE ?? "https://www.dnd5eapi.co";
-const SEED_PASSWORD = process.env.PUBLIC_CONTENT_SEED_PASSWORD ?? "ArcanumWikiSeed!23";
+const SEED_PASSWORD = process.env.PUBLIC_CONTENT_SEED_PASSWORD;
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.");
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !SEED_PASSWORD) {
+  throw new Error(
+    "SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and PUBLIC_CONTENT_SEED_PASSWORD are required.",
+  );
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
